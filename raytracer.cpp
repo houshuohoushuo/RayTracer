@@ -49,7 +49,7 @@ void Raytracer::computeShading(Ray3D& ray, LightList& light_list,Scene& scene) {
         r.dir.normalize();
         traverseScene(scene,r);
         if (!r.intersection.none) {
-            ray.col = Color(0.0,0.0,0.0);
+//            ray.col = Color(0.0,0.0,0.0);
         }
     }
 }
@@ -71,7 +71,7 @@ Color Raytracer::shadeRay(Ray3D& ray, Scene& scene, LightList& light_list) {
         r.dir.normalize();
         
         if(ray.intersection.normal.dot(r.dir) > 0){
-            col = col + 0.0*shadeRay(r,scene,light_list);
+            col = col + 0.3*shadeRay(r,scene,light_list);
         }
     }
     
