@@ -36,6 +36,10 @@ void Raytracer::computeTransforms(Scene& scene) {
 }
 
 void Raytracer::computeShading(Ray3D& ray, LightList& light_list,Scene& scene) {
+    const int SHADOW_SAMPLE = 10;
+    const double REFLECTION_OFFSET = 0.0001; // remove shadow acne
+    
+    
     for (size_t  i = 0; i < light_list.size(); ++i) {
         LightSource* light = light_list[i];
         
@@ -43,14 +47,23 @@ void Raytracer::computeShading(Ray3D& ray, LightList& light_list,Scene& scene) {
         // Implement shadows here if needed.
         light->shade(ray);
         
-        Ray3D r;
-        r.origin = ray.intersection.point - 0.0001 * ray.dir;
-        r.dir = light->get_position()-r.origin;
-        r.dir.normalize();
-        traverseScene(scene,r);
-        if (!r.intersection.none) {
-//            ray.col = Color(0.0,0.0,0.0);
+        int hit = 0;
+        for (int i = 0; i < SHADOW_SAMPLE; i++)
+        {
+            // sample light position
+            Point3D light_rand = light->get_position() + ((double)rand() / RAND_MAX - 1.0 / 2) * Vector3D(5, 0, 5);
+            Ray3D r;
+            r.origin = ray.intersection.point - 0.0001 * ray.dir;
+            r.dir = light_rand - r.origin;
+            r.dir.normalize();
+            traverseScene(scene,r);
+            if (!r.intersection.none) {
+                hit++;
+            }
         }
+        double r = (double)hit / SHADOW_SAMPLE; // 0 ~ 1
+        //            ray.col = (1 - r) * ray.col + (r)* ray.intersection.mat->ambient;
+        ray.col = (1 - r) * ray.col;
     }
 }
 
@@ -71,7 +84,7 @@ Color Raytracer::shadeRay(Ray3D& ray, Scene& scene, LightList& light_list) {
         r.dir.normalize();
         
         if(ray.intersection.normal.dot(r.dir) > 0){
-            col = col + 0.3*shadeRay(r,scene,light_list);
+            col = col + 0.0*shadeRay(r,scene,light_list);
         }
     }
     
@@ -101,7 +114,7 @@ void Raytracer::render(Camera& camera, Scene& scene, LightList& light_list, Imag
             // Sets up ray origin and direction in view space,
             // image plane is at z = -1.
             Color col = Color(0.0,0.0,0.0);
-
+            
             //Anti aliasing super sampling
             for(int k = 0; k < 4; k++){
                 
