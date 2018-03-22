@@ -26,18 +26,18 @@ bool UnitSquare::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
     //adapted from tutorial slide
     
     //Transform the ray (origin, direction) to object space
-    if (ray.intersection.none == true){
-        
-        Point3D origin = worldToModel * ray.origin;
-        Vector3D direction = worldToModel * ray.dir;
-        double t = -origin[2] / direction[2];
-        //invalid intersection
-        if (t < 0 || direction[2] ==0){
-            return false;
-        }
-        
-        Point3D p = origin + t * direction;
-        Vector3D normal = Vector3D(0,0,1);
+    
+    Point3D origin = worldToModel * ray.origin;
+    Vector3D direction = worldToModel * ray.dir;
+    double t = -origin[2] / direction[2];
+    //invalid intersection
+    if (t < 0 || direction[2] ==0){
+        return false;
+    }
+    
+    Point3D p = origin + t * direction;
+    Vector3D normal = Vector3D(0,0,1);
+    if (ray.intersection.none || t < ray.intersection.t_value){
         if (p[0] >= -0.5 && p[0] <= 0.5 && p[1] >= -0.5 && p[1] <= 0.5) {
             ray.intersection.none = false;
             ray.intersection.t_value = t;
@@ -64,34 +64,35 @@ bool UnitSphere::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
     // to simplify the intersection test.
     
     //Transform the ray (origin, direction) to object space
-    if (ray.intersection.none == true){
+    
+    Point3D origin = worldToModel * ray.origin;
+    Vector3D direction = worldToModel * ray.dir;
+    
+    double A = direction.dot(direction);
+    double B = 2 * direction.dot(origin - Point3D(0,0,0));
+    double C = (origin - Point3D(0,0,0)).dot(origin - Point3D(0,0,0))-1;
+    double delta = pow(B,2)-4*A*C;
+    if (delta >= 0){
         
-        Point3D origin = worldToModel * ray.origin;
-        Vector3D direction = worldToModel * ray.dir;
+        double t1 = (-B + sqrt(delta))/(2*A);
+        double t2 = (-B - sqrt(delta))/(2*A);
+        double t_value;
         
-        double A = direction.dot(direction);
-        double B = 2 * direction.dot(origin - Point3D(0,0,0));
-        double C = (origin - Point3D(0,0,0)).dot(origin - Point3D(0,0,0))-1;
-        double delta = pow(B,2)-4*A*C;
-        if (delta >= 0){
-            
-            double t1 = (-B + sqrt(delta))/(2*A);
-            double t2 = (-B - sqrt(delta))/(2*A);
-            double t_value;
-            
-            if (t1 < 0 && t2 < 0){
-                return false;
-            } else if (t1 > 0 && t2 >0) {
-                if (t1 < t2) {
-                    t_value = t1;
-                }else{
-                    t_value = t2;
-                }
-            }else if (t1 > 0 && t2 <0){
+        if (t1 < 0 && t2 < 0){
+            return false;
+        } else if (t1 > 0 && t2 >0) {
+            if (t1 < t2) {
                 t_value = t1;
             }else{
                 t_value = t2;
             }
+        }else if (t1 > 0 && t2 <0){
+            t_value = t1;
+        }else{
+            t_value = t2;
+        }
+        if (ray.intersection.none || t_value < ray.intersection.t_value){
+            
             Point3D p = origin + t_value * direction;
             Vector3D normal = Vector3D(p[0],p[1],p[2]);
             ray.intersection.none = false;
