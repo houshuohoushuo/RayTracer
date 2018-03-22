@@ -34,9 +34,10 @@ int main(int argc, char* argv[])
 		Color(0.316228,0.316228,0.316228),
 		12.8);
 
-	// Defines a point light source.
-	PointLight* pLight = new PointLight(Point3D(0,0,5), Color(0.9,0.9,0.9));
-	light_list.push_back(pLight);
+	// Defines a Square light source.
+    // when light width is 0,light source is point light
+	SquareLight* sLight = new SquareLight(Point3D(0,0,5), Color(0.9,0.9,0.9),0);
+	light_list.push_back(sLight);
 	
 	// Add a unit square into the scene with material mat.
 	SceneNode* sphere = new SceneNode(new UnitSphere(), &gold);

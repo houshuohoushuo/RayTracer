@@ -36,10 +36,7 @@ void Raytracer::computeTransforms(Scene& scene) {
 }
 
 void Raytracer::computeShading(Ray3D& ray, LightList& light_list,Scene& scene) {
-    const int SHADOW_SAMPLE = 10;
-    const double REFLECTION_OFFSET = 0.0001; // remove shadow acne
-    
-    
+    int SHADOW_SAMPLE = 50;
     for (size_t  i = 0; i < light_list.size(); ++i) {
         LightSource* light = light_list[i];
         
@@ -50,8 +47,10 @@ void Raytracer::computeShading(Ray3D& ray, LightList& light_list,Scene& scene) {
         int hit = 0;
         for (int i = 0; i < SHADOW_SAMPLE; i++)
         {
+            Vector3D area = Vector3D(light->get_width(), 0, light->get_width());
+
             // sample light position
-            Point3D light_rand = light->get_position() + ((double)rand() / RAND_MAX - 1.0 / 2) * Vector3D(5, 0, 5);
+            Point3D light_rand = light->get_position() + ((double)rand() / RAND_MAX - 1 / 2) * area;
             Ray3D r;
             r.origin = ray.intersection.point - 0.0001 * ray.dir;
             r.dir = light_rand - r.origin;
