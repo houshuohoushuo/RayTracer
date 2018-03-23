@@ -6,6 +6,16 @@
 
 #include <cstdlib>
 #include "raytracer.h"
+#include "texture_handler.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+Material EnvMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
+                Color(0.628281, 0.555802, 0.366065),
+                51.2);
 
 int main(int argc, char* argv[])
 {
@@ -25,7 +35,7 @@ int main(int argc, char* argv[])
 		width = atoi(argv[1]);
 		height = atoi(argv[2]);
 	}
-	
+	ini_texture_handler();
 	// Define materials for shading.
 	Material gold(Color(0.3, 0.3, 0.3), Color(0.75164,0.60648,0.22648),
 		Color(0.628281, 0.555802, 0.366065),
@@ -36,11 +46,14 @@ int main(int argc, char* argv[])
 
 	// Defines a Square light source.
     // when light width is 0,light source is point light
-	SquareLight* sLight = new SquareLight(Point3D(0,0,5), Color(0.9,0.9,0.9),0);
-	light_list.push_back(sLight);
+	// SquareLight* sLight = new SquareLight(Point3D(0,0,5), Color(0.9,0.9,0.9),0);
+	// light_list.push_back(sLight);
+
+	PointLight* pLight = new PointLight(Point3D(0,0,5), Color(0.9,0.9,0.9));
+	light_list.push_back(pLight);
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &gold);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
 	scene.push_back(sphere);
 	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
 	scene.push_back(plane);

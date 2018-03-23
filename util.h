@@ -142,7 +142,7 @@ struct Material {
 
 struct Intersection {
 	// Location of intersection.
-	Point3D point;
+	Point3D point, transformed_point;
 	// Normal at the intersection.
 	Vector3D normal;
 	// Material at the intersection.
