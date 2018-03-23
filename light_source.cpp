@@ -23,6 +23,9 @@ extern int env_height;
 extern GLubyte *env_texture;
 extern GLubyte *wood;
 
+extern Material EnvMapping;
+extern Material TextureMapping;
+
 double max(double a, double b){
     if (a > b) {
         return a;
@@ -60,32 +63,40 @@ void PointLight::shade(Ray3D& ray) {
     */
     auto point = ray.intersection.point;
     auto material = *(ray.intersection.mat);
-    // auto normal = ray.intersection.normal;
-    // auto viewDir = -ray.dir;
-    // auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
-    // reflectDir.normalize();
 
-    // int x = env_width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
-    // int y = env_height * (std::asin (reflectDir[1]) / M_PI + 0.5);
+    if (ray.intersection.mat == &EnvMapping){
+        auto normal = ray.intersection.normal;
+        auto viewDir = -ray.dir;
+        auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
+        reflectDir.normalize();
 
-    // float r = env_texture[y * 3 * env_width + x * 3 + 0] * 1.0 / 255;
-    // float g = env_texture[y * 3 * env_width + x * 3 + 1] * 1.0 / 255;
-    // float b = env_texture[y * 3 * env_width + x * 3 + 2] * 1.0 / 255;
+        int x = env_width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
+        int y = env_height * (std::asin (reflectDir[1]) / M_PI + 0.5);
 
-    // ray.col = ray.col + Color(r, g, b);
+        float r = env_texture[y * 3 * env_width + x * 3 + 0] * 1.0 / 255;
+        float g = env_texture[y * 3 * env_width + x * 3 + 1] * 1.0 / 255;
+        float b = env_texture[y * 3 * env_width + x * 3 + 2] * 1.0 / 255;
 
-    // return;
+        ray.col = ray.col + Color(r, g, b);
 
-    int x = width  * (std::atan2(ray.intersection.transformed_point[0], ray.intersection.transformed_point[2]) / (2 * M_PI) + 0.5);
-    int y = height * (std::asin (ray.intersection.transformed_point[1]) / M_PI + 0.5);
+        return;
 
-    float r = wood[y * 3 * width + x * 3 + 0] * 1.0 / 255;
-    float g = wood[y * 3 * width + x * 3 + 1] * 1.0 / 255;
-    float b = wood[y * 3 * width + x * 3 + 2] * 1.0 / 255;
+    }
+    
+    if (ray.intersection.mat == &TextureMapping){
+        int x = width  * (std::atan2(ray.intersection.transformed_point[0], ray.intersection.transformed_point[2]) / (2 * M_PI) + 0.5);
+        int y = height * (std::asin (ray.intersection.transformed_point[1]) / M_PI + 0.5);
 
-    ray.col = ray.col + Color(r, g, b);
+        float r = wood[y * 3 * width + x * 3 + 0] * 1.0 / 255;
+        float g = wood[y * 3 * width + x * 3 + 1] * 1.0 / 255;
+        float b = wood[y * 3 * width + x * 3 + 2] * 1.0 / 255;
 
-    return; 
+        ray.col = ray.col + Color(r, g, b);
+
+        return;
+    }
+
+     
 
 }
 void SquareLight::shade(Ray3D& ray) {

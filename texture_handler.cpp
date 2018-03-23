@@ -74,8 +74,8 @@ bool loadPngImage(char *name, int &outWidth, int &outHeight, bool &outHasAlpha, 
 void ini_texture_handler()
 {	
     bool hasAlpha;
-    char earthmap[]="wood.png";
-    bool success = loadPngImage(earthmap, width, height, hasAlpha, &wood);
+    char texture[]="wood.png";
+    bool success = loadPngImage(texture, width, height, hasAlpha, &wood);
     if (!success) {
         std::cout << "Unable to load png file" << std::endl;
         return;

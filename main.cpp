@@ -16,6 +16,9 @@
 Material EnvMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
                 Color(0.628281, 0.555802, 0.366065),
                 51.2);
+Material TextureMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
+                Color(0.628281, 0.555802, 0.366065),
+                51.2);
 
 int main(int argc, char* argv[])
 {
@@ -53,9 +56,9 @@ int main(int argc, char* argv[])
 	light_list.push_back(pLight);
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
 	scene.push_back(sphere);
-	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
+	SceneNode* plane = new SceneNode(new UnitSquare(), &EnvMapping);
 	scene.push_back(plane);
 
 	// Apply some transformations to the sphere and unit square.
