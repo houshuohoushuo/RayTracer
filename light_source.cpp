@@ -16,6 +16,8 @@
 #include <GL/glut.h>
 #endif
 
+extern int width;
+extern int height;
 extern int env_width;
 extern int env_height;
 extern GLubyte *env_texture;
@@ -58,21 +60,32 @@ void PointLight::shade(Ray3D& ray) {
     */
     auto point = ray.intersection.point;
     auto material = *(ray.intersection.mat);
-    auto normal = ray.intersection.normal;
-    auto viewDir = -ray.dir;
-    auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
-    reflectDir.normalize();
+    // auto normal = ray.intersection.normal;
+    // auto viewDir = -ray.dir;
+    // auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
+    // reflectDir.normalize();
 
-    int x = env_width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
-    int y = env_height * (std::asin (reflectDir[1]) / M_PI + 0.5);
+    // int x = env_width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
+    // int y = env_height * (std::asin (reflectDir[1]) / M_PI + 0.5);
 
-    float r = env_texture[y * 3 * env_width + x * 3 + 0] * 1.0 / 255;
-    float g = env_texture[y * 3 * env_width + x * 3 + 1] * 1.0 / 255;
-    float b = env_texture[y * 3 * env_width + x * 3 + 2] * 1.0 / 255;
+    // float r = env_texture[y * 3 * env_width + x * 3 + 0] * 1.0 / 255;
+    // float g = env_texture[y * 3 * env_width + x * 3 + 1] * 1.0 / 255;
+    // float b = env_texture[y * 3 * env_width + x * 3 + 2] * 1.0 / 255;
+
+    // ray.col = ray.col + Color(r, g, b);
+
+    // return;
+
+    int x = width  * (std::atan2(ray.intersection.transformed_point[0], ray.intersection.transformed_point[2]) / (2 * M_PI) + 0.5);
+    int y = height * (std::asin (ray.intersection.transformed_point[1]) / M_PI + 0.5);
+
+    float r = wood[y * 3 * width + x * 3 + 0] * 1.0 / 255;
+    float g = wood[y * 3 * width + x * 3 + 1] * 1.0 / 255;
+    float b = wood[y * 3 * width + x * 3 + 2] * 1.0 / 255;
 
     ray.col = ray.col + Color(r, g, b);
 
-    return;
+    return; 
 
 }
 void SquareLight::shade(Ray3D& ray) {
