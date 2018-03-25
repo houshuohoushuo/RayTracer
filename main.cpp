@@ -56,9 +56,9 @@ int main(int argc, char* argv[])
 	light_list.push_back(pLight);
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
 	scene.push_back(sphere);
-	SceneNode* plane = new SceneNode(new UnitSquare(), &TextureMapping);
+	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
 	scene.push_back(plane);
 
 	// Apply some transformations to the sphere and unit square.
