@@ -56,13 +56,15 @@ int main(int argc, char* argv[])
 	light_list.push_back(pLight);
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
 	scene.push_back(sphere);
-	SceneNode* plane = new SceneNode(new UnitSquare(), &EnvMapping);
+	SceneNode* plane = new SceneNode(new UnitSquare(), &TextureMapping);
 	scene.push_back(plane);
 
 	// Apply some transformations to the sphere and unit square.
-	double factor1[3] = { 1.0, 2.0, 1.0 };
+	// double factor1[3] = { 1.0, 2.0, 1.0 };
+
+	double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
 	sphere->translate(Vector3D(0, 0, -5));
 	sphere->rotate('x', -45);
 	sphere->rotate('z', 45);
