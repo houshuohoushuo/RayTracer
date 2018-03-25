@@ -77,7 +77,7 @@ int loadTexture(char *name, int &outWidth, int &outHeight, GLubyte **outData) {
 
 void ini_texture_handler()
 {	
-    char texture[]="rock.png";
+    char texture[]="starnight.png";
     loadTexture(texture, texture_width, texture_height,&wood);
     char env_image[]="torontodowntown.png";
     loadTexture(env_image, env_width, env_height,&env_texture);

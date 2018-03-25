@@ -34,6 +34,23 @@ double max(double a, double b){
     }
 }
 
+Color texture_color (Ray3D& ray, int width, int height, GLubyte *image){
+    auto normal = ray.intersection.normal;
+    auto viewDir = -ray.dir;
+    auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
+    reflectDir.normalize();
+
+    int x = width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
+    int y = height * (std::asin (reflectDir[1]) / M_PI + 0.5);
+
+    float r = image[y * 3 * width + x * 3 + 0]  / 255.0;
+    float g = image[y * 3 * width + x * 3 + 1]  / 255.0;
+    float b = image[y * 3 * width + x * 3 + 2]  / 255.0;
+
+    return Color(r,g,b);
+
+}
+
 void PointLight::shade(Ray3D& ray) {
 	// TODO: implement this function to fill in values for ray.col 
 	// using phong shading.  Make sure your vectors are normalized, and
@@ -43,40 +60,16 @@ void PointLight::shade(Ray3D& ray) {
 	// is available.  So be sure that traverseScene() is called on the ray 
 	// before this function.
     
-    
-    
     auto point = ray.intersection.point;
     auto material = *(ray.intersection.mat);
 
     if (ray.intersection.mat == &EnvMapping){
-        auto normal = ray.intersection.normal;
-        auto viewDir = -ray.dir;
-        auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
-        reflectDir.normalize();
-
-        int x = env_width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
-        int y = env_height * (std::asin (reflectDir[1]) / M_PI + 0.5);
-
-        float r = env_texture[y * 3 * env_width + x * 3 + 0] * 1.0 / 255;
-        float g = env_texture[y * 3 * env_width + x * 3 + 1] * 1.0 / 255;
-        float b = env_texture[y * 3 * env_width + x * 3 + 2] * 1.0 / 255;
-
-        ray.col = ray.col + Color(r, g, b);
-
+        ray.col = ray.col + texture_color(ray, env_width, env_height,env_texture);
         return;
-
     }
     
     if (ray.intersection.mat == &TextureMapping){
-        int x = texture_width  * (std::atan2(ray.intersection.point[0], ray.intersection.point[2]) / (2 * M_PI) + 0.5);
-        int y = texture_height * (std::asin (ray.intersection.point[1]) / M_PI + 0.5);
-
-        float r = wood[y * 3 * texture_width + x * 3 + 0] * 1.0 / 255;
-        float g = wood[y * 3 * texture_width + x * 3 + 1] * 1.0 / 255;
-        float b = wood[y * 3 * texture_width + x * 3 + 2] * 1.0 / 255;
-
-        ray.col = ray.col + Color(r, g, b);
-
+        ray.col = ray.col + texture_color(ray, texture_width, texture_height,wood);
         return;
     }
 
