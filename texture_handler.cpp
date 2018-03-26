@@ -79,6 +79,6 @@ void ini_texture_handler()
 {	
     char texture[]="ball.png";
     loadTexture(texture, texture_width, texture_height,&wood);
-    char env_image[]="court.png";
+    char env_image[]="torontodowntown.png";
     loadTexture(env_image, env_width, env_height,&env_texture);
 }

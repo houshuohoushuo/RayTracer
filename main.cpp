@@ -57,11 +57,11 @@ int main(int argc, char* argv[])
 
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
 	scene.push_back(sphere);
 
 	
-	SceneNode* plane = new SceneNode(new UnitSquare(), &EnvMapping);
+	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
 	scene.push_back(plane);
 
 	// Apply some transformations to the sphere and unit square.

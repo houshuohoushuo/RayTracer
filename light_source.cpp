@@ -45,21 +45,32 @@ Color sphere_texture_color (Ray3D& ray, int width, int height, GLubyte *image, i
     // v = 0.5 - asin(y) / π
 
     if (type==0){
-        // u = width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
-        // v = height * (std::asin (reflectDir[1]) / M_PI + 0.5);
+        u = width  * (std::atan2(reflectDir[0], reflectDir[2]) / (2 * M_PI) + 0.5);
+        v = height * (std::asin (reflectDir[1]) / M_PI + 0.5);
 
-        if (abs(ray.intersection.transformed_point[0])==1){
-            u = texture_width*(ray.intersection.transformed_point[2]+1)/2;
-            v = texture_height*(ray.intersection.transformed_point[1]+1)/2;
-        }
-        else if (abs(ray.intersection.transformed_point[1])==1){
-            u = texture_width*(ray.intersection.transformed_point[0]+1)/2;
-            v = texture_height*(ray.intersection.transformed_point[2]+1)/2;
-        }
-        else{
-            u = texture_width*(ray.intersection.transformed_point[0]+1)/2;
-            v = texture_height*(ray.intersection.transformed_point[1]+1)/2;
-        }
+        // UV mapping of a unit cube
+        // if |x| == 1:
+        //  u = (z + 1) / 2
+        //  v = (y + 1) / 2
+        // elif |y| == 1:
+        //  u = (x + 1) / 2
+        //  v = (z + 1) / 2
+        // else:
+        //  u = (x + 1) / 2
+        //  v = (y + 1) / 2
+
+        // if (abs(ray.intersection.transformed_point[0])==1){
+        //     u = texture_width*(ray.intersection.transformed_point[2]+1)/2;
+        //     v = texture_height*(ray.intersection.transformed_point[1]+1)/2;
+        // }
+        // else if (abs(ray.intersection.transformed_point[1])==1){
+        //     u = texture_width*(ray.intersection.transformed_point[0]+1)/2;
+        //     v = texture_height*(ray.intersection.transformed_point[2]+1)/2;
+        // }
+        // else{
+        //     u = texture_width*(ray.intersection.transformed_point[0]+1)/2;
+        //     v = texture_height*(ray.intersection.transformed_point[1]+1)/2;
+        // }
     }
 
     if (type==1){
@@ -96,42 +107,6 @@ void PointLight::shade(Ray3D& ray) {
         ray.col = ray.col + sphere_texture_color(ray, texture_width, texture_height,wood, 1);
         return;
     }
-    // plane texture mapping
-    /*
-    if (ray.intersection.mat == &TextureMapping){
-        // UV mapping of a unit cube
-        // if |x| == 1:
-        //  u = (z + 1) / 2
-        //  v = (y + 1) / 2
-        // elif |y| == 1:
-        //  u = (x + 1) / 2
-        //  v = (z + 1) / 2
-        // else:
-        //  u = (x + 1) / 2
-        //  v = (y + 1) / 2
-        int x,y;
-        if (abs(ray.intersection.transformed_point[0])==1){
-            x = texture_width*(ray.intersection.transformed_point[2]+1)/2;
-            y = texture_height*(ray.intersection.transformed_point[1]+1)/2;
-        }
-        else if (abs(ray.intersection.transformed_point[1])==1){
-            x = texture_width*(ray.intersection.transformed_point[0]+1)/2;
-            y = texture_height*(ray.intersection.transformed_point[2]+1)/2;
-        }
-        else{
-            x = texture_width*(ray.intersection.transformed_point[0]+1)/2;
-            y = texture_height*(ray.intersection.transformed_point[1]+1)/2;
-        }
-
-        float r = wood[y * 3 * texture_width + x * 3 + 0] * 1.0 / 255;
-        float g = wood[y * 3 * texture_width + x * 3 + 1] * 1.0 / 255;
-        float b = wood[y * 3 * texture_width + x * 3 + 2] * 1.0 / 255;
-
-        ray.col = ray.col + Color(r, g, b);
-
-        return; 
-    }
-    */
 
     Vector3D normal = ray.intersection.normal;
     normal.normalize();
