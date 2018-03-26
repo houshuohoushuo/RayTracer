@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 	LightList light_list;
 	Scene scene;   
 
-    int width = 320;
-    int height = 240;
+    int width = 640;
+    int height = 480;
     
 	if (argc == 3) {
 		width = atoi(argv[1]);
@@ -54,72 +54,30 @@ int main(int argc, char* argv[])
 
 	PointLight* pLight = new PointLight(Point3D(0,0,5), Color(0.9,0.9,0.9));
 	light_list.push_back(pLight);
+
 	
 	// Add a unit square into the scene with material mat.
-	// SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
-	// scene.push_back(sphere);
+	SceneNode* sphere = new SceneNode(new UnitSphere(), &TextureMapping);
+	scene.push_back(sphere);
 
-	//up side for cube
-	SceneNode* cube1 = new SceneNode(new UnitSquare(), &TextureMapping);
-	scene.push_back(cube1);
-	// side for cube
-	SceneNode* cube2 = new SceneNode(new UnitSquare(), &TextureMapping);
-	scene.push_back(cube2);
-	//side for cube
-	SceneNode* cube3 = new SceneNode(new UnitSquare(), &TextureMapping);
-	scene.push_back(cube3);
-
-	//side for cube
-	SceneNode* cube4 = new SceneNode(new UnitSquare(), &TextureMapping);
-	scene.push_back(cube4);
-
-	//side for cube
-	SceneNode* cube5 = new SceneNode(new UnitSquare(), &TextureMapping);
-	scene.push_back(cube5);
 	
-	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
+	SceneNode* plane = new SceneNode(new UnitSquare(), &EnvMapping);
 	scene.push_back(plane);
 
 	// Apply some transformations to the sphere and unit square.
 	// double factor1[3] = { 1.0, 2.0, 1.0 };
 
-	// double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
-	// sphere->translate(Vector3D(0, 0, -5));
-	// sphere->rotate('x', -45);
-	// sphere->rotate('z', 45);
-	// sphere->scale(Point3D(0, 0, 0), factor1);
+	double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
+	sphere->translate(Vector3D(0, 0, -5));
+	sphere->rotate('x', -45);
+	sphere->rotate('z', 45);
+	sphere->scale(Point3D(0, 0, 0), factor1);
+	
 	double factor2[3] = { 6.0, 6.0, 6.0 };
 	plane->translate(Vector3D(0, 0, -7));
 	plane->rotate('z', 45);
 	plane->scale(Point3D(0, 0, 0), factor2);
 
-
-	double factor3[3] = { 1.0, 1.0, 1.0 }; 
-	cube1->translate(Vector3D(0, 0, -5));
-	cube1->scale(Point3D(0, 0, 0), factor3);
-
-	
-	double factor4[3] = { 1.0, 1.0, 1.0 }; 
-	cube2->translate(Vector3D(0, 0.5, -5.5));
-	cube2->rotate('x', -90);
-	cube2->scale(Point3D(0, 0, 0), factor4);
-
-	double factor5[3] = { 1.0, 1.0, 1.0 }; 
-	cube3->translate(Vector3D(0, -0.5, -5.5));
-	cube3->rotate('x', -90);
-	cube3->scale(Point3D(0, 0, 0), factor5);
-
-	double factor6[3] = { 1.0, 1.0, 1.0 }; 
-	cube4->translate(Vector3D(0.5, 0, -5.5));
-	cube4->rotate('x', -90);
-	cube4->rotate('y', 90);
-	cube4->scale(Point3D(0, 0, 0), factor6);
-
-	double factor7[3] = { 1.0, 1.0, 1.0 }; 
-	cube5->translate(Vector3D(-0.5, 0, -5.5));
-	cube5->rotate('x', -90);
-	cube5->rotate('y', 90);
-	cube5->scale(Point3D(0, 0, 0), factor7);
 
 
 	
@@ -135,6 +93,8 @@ int main(int argc, char* argv[])
 	Image image2(width, height);
 	raytracer.render(camera2, scene, light_list, image2);
 	image2.flushPixelBuffer("view2.bmp");
+
+
 
 	// Free memory
 	for (size_t i = 0; i < scene.size(); ++i) {

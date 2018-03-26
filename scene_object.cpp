@@ -29,7 +29,6 @@ bool UnitSquare::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
     
     Point3D origin = worldToModel * ray.origin;
     Vector3D direction = worldToModel * ray.dir;
-    Ray3D transformed_ray (worldToModel * ray.origin, worldToModel * ray.dir);
     double t = -origin[2] / direction[2];
     //invalid intersection
     if (t < 0 || direction[2] ==0){
@@ -37,13 +36,14 @@ bool UnitSquare::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
     }
     
     Point3D p = origin + t * direction;
+
     Vector3D normal = Vector3D(0,0,1);
     if (ray.intersection.none || t < ray.intersection.t_value){
         if (p[0] >= -0.5 && p[0] <= 0.5 && p[1] >= -0.5 && p[1] <= 0.5) {
             ray.intersection.none = false;
             ray.intersection.t_value = t;
             ray.intersection.point = modelToWorld * p;
-            ray.intersection.transformed_point = Point3D(transformed_ray.origin[0] + t * transformed_ray.dir[0], transformed_ray.origin[1] + t * transformed_ray.dir[1], 0);
+            ray.intersection.transformed_point = p;
             ray.intersection.normal = worldToModel.transpose() * normal;
             ray.intersection.normal.normalize();
             return true;
@@ -69,7 +69,6 @@ bool UnitSphere::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
     
     Point3D origin = worldToModel * ray.origin;
     Vector3D direction = worldToModel * ray.dir;
-    Ray3D transformed_ray (worldToModel * ray.origin, worldToModel * ray.dir);
 
     double A = direction.dot(direction);
     double B = 2 * direction.dot(origin - Point3D(0,0,0));
@@ -101,8 +100,7 @@ bool UnitSphere::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
             ray.intersection.none = false;
             ray.intersection.t_value = t_value;
             ray.intersection.point = modelToWorld * p;
-            double t = -1, t2;
-            ray.intersection.transformed_point = transformed_ray.origin + t * transformed_ray.dir;
+            ray.intersection.transformed_point = p;
             ray.intersection.normal = worldToModel.transpose() * normal;
             ray.intersection.normal.normalize();
             return true;
