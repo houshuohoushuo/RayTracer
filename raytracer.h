@@ -12,6 +12,8 @@
 #include "scene_object.h"
 #include "light_source.h"
 
+const int MAX_DEPTH = 2;
+
 class Raytracer {
 public:
 	// Renders 3D scene to an image given camera and lights setup.
@@ -21,7 +23,7 @@ private:
 
 	// Return the color of the ray after intersection and shading, call 
 	// this function recursively for reflection and refraction.  
-	Color shadeRay(Ray3D& ray, Scene& scene, LightList& light_list);
+	Color shadeRay(Ray3D& ray, Scene& scene, LightList& light_list, int refl_depth);
 
 	// Traversal code for the scene, the ray is transformed into 
 	// the object space of each node where intersection is performed.

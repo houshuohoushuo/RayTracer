@@ -15,10 +15,10 @@
 
 Material EnvMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
                 Color(0.628281, 0.555802, 0.366065),
-                51.2);
+                51.2, 0.0);
 Material TextureMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
                 Color(0.628281, 0.555802, 0.366065),
-                51.2);
+                51.2, 0.0);
 
 int main(int argc, char* argv[])
 {
@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 	LightList light_list;
 	Scene scene;   
 
-    int width = 640;
-    int height = 480;
+    int width = 320;
+    int height = 240;
     
 	if (argc == 3) {
 		width = atoi(argv[1]);
@@ -42,10 +42,10 @@ int main(int argc, char* argv[])
 	// Define materials for shading.
 	Material gold(Color(0.3, 0.3, 0.3), Color(0.75164,0.60648,0.22648),
 		Color(0.628281, 0.555802, 0.366065),
-		51.2);
+		51.2,0.5);
 	Material jade(Color(0, 0, 0), Color(0.54,0.89,0.63),
 		Color(0.316228,0.316228,0.316228),
-		12.8);
+		12.8,0.5);
 
 	// Defines a Square light source.
     // when light width is 0,light source is point light

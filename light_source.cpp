@@ -96,17 +96,17 @@ void PointLight::shade(Ray3D& ray) {
 	// is available.  So be sure that traverseScene() is called on the ray 
 	// before this function.
     
-    auto point = ray.intersection.point;
-    auto material = *(ray.intersection.mat);
+    // auto point = ray.intersection.point;
+    // auto material = *(ray.intersection.mat);
 
-    if (ray.intersection.mat == &EnvMapping){
-        ray.col = ray.col + sphere_texture_color(ray, env_width, env_height,env_texture, 0);
-        return;
-    }
-    if (ray.intersection.mat == &TextureMapping){
-        ray.col = ray.col + sphere_texture_color(ray, texture_width, texture_height,wood, 1);
-        return;
-    }
+    // if (ray.intersection.mat == &EnvMapping){
+    //     ray.col = ray.col + sphere_texture_color(ray, env_width, env_height,env_texture, 0);
+    //     return;
+    // }
+    // if (ray.intersection.mat == &TextureMapping){
+    //     ray.col = ray.col + sphere_texture_color(ray, texture_width, texture_height,wood, 1);
+    //     return;
+    // }
 
     Vector3D normal = ray.intersection.normal;
     normal.normalize();
