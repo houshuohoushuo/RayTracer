@@ -57,22 +57,34 @@ int main(int argc, char* argv[])
 
 	
 	// Add a unit square into the scene with material mat.
-	SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
-	scene.push_back(sphere);
+	SceneNode* cone = new SceneNode(new UnitCone(), &gold);
+	scene.push_back(cone);
+
+	// SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+	// scene.push_back(sphere);
 
 	
 	SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
 	scene.push_back(plane);
 
+
+
 	// Apply some transformations to the sphere and unit square.
 	// double factor1[3] = { 1.0, 2.0, 1.0 };
 
-	double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
-	sphere->translate(Vector3D(0, 0, -5));
-	sphere->rotate('x', -45);
-	sphere->rotate('z', 45);
-	sphere->scale(Point3D(0, 0, 0), factor1);
-	
+	// double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
+	// sphere->translate(Vector3D(0, 0, -5));
+	// sphere->rotate('x', -45);
+	// sphere->rotate('z', 45);
+	// sphere->scale(Point3D(0, 0, 0), factor1);
+
+	double factor3[3] = { 1.0, 1.0, 1.0 }; //unit
+	cone->translate(Vector3D(0, 0, -5));
+	// cone->rotate('x', -45);
+	// cone->rotate('z', 45);
+	cone->scale(Point3D(0, 0, 0), factor3);
+
+
 	double factor2[3] = { 6.0, 6.0, 6.0 };
 	plane->translate(Vector3D(0, 0, -7));
 	plane->rotate('z', 45);

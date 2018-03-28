@@ -7,6 +7,7 @@
  ***********************************************************/
 
 #include <cmath>
+#include <algorithm>
 #include "scene_object.h"
 
 bool UnitSquare::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
@@ -105,6 +106,130 @@ bool UnitSphere::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
             ray.intersection.normal.normalize();
             return true;
         }
+    }
+    return false;
+}
+
+// bool UnitCone::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
+//                            const Matrix4x4& modelToWorld){
+//     Point3D origin = worldToModel * ray.origin;
+//     Vector3D direction = worldToModel * ray.dir;
+
+//     double x0=origin[0], y0=origin[1], z0=origin[2];
+//     double dx=direction[0], dy=direction[1], dz=direction[2];
+//     double t;
+
+//     double A = pow(dx,2) + pow(dy,2) - pow(dz,2);
+//     double B = 2*(x0*dx + y0*dy - z0*dz);
+//     double C = pow(x0,2) + pow(y0,2) -pow(z0,2);
+//     double delta = pow(B,2)-4*A*C;
+//     double d = (1 - z0)/dz;
+
+//     Point3D D = origin + d*direction;
+
+//     bool hitbase = D[0] * D[0] + D[1] * D[1] <= 1;
+
+//     if(fabs(delta) < 0.001) return false; 
+//     if(delta < 0.0) return false;
+
+//     if (hitbase){
+//         if(delta>=0){
+//             double t1 = (-B - sqrt(delta))/(2*A);
+//             double t2 = (-B + sqrt(delta))/(2*A);
+            
+//             if (t1>t2){
+//                 t=t2;
+//             }
+//             else{
+//                 t=t1;
+//             }
+//         }
+
+//     }
+    
+    
+//     Point3D inter = origin + t * direction;
+//     Vector3D normal;
+//     if(t==d){
+//         normal = Vector3D(0,0,1);
+//     }
+//     else{
+//         normal =  Vector3D(inter[0], inter[1], sqrt(inter[0]*inter[0]+ inter[1]*inter[1]));
+//     }
+
+//     ray.intersection.none = false;
+//     ray.intersection.point = modelToWorld * inter;
+//     ray.intersection.normal = worldToModel.transpose() * normal;
+//     ray.intersection.normal.normalize();
+//     ray.intersection.t_value = t;
+    
+//     return true;
+
+// }
+
+bool UnitCone::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
+        const Matrix4x4& modelToWorld) {
+    Vector3D direction = worldToModel * ray.dir;
+    Point3D origin = worldToModel * ray.origin;
+
+    double a = pow(direction[0],2) + pow(direction[2],2) - pow(direction[1],2);
+    double b = 2*(origin[0] * direction[0] + origin[2] * direction[2] - origin[1] * direction[1]);
+    double c = pow(origin[0],2) + pow(origin[2],2) -pow(origin[1],2);
+    double delta = pow(b,2)-4*a*c;
+
+    if (delta > 0) {
+        double t1 = (-b - sqrt(delta)) / (2 * a);
+        double t2 = (-b + sqrt(delta)) / (2 * a);
+
+        if ((origin + t1 * direction)[1] > 1 || (origin + t1 * direction)[1] < -1) {
+            t1 = -1;
+        }
+        if ((origin + t2 * direction)[1] > 1 || (origin + t2 * direction)[1] < -1) {
+            t2 = -1;
+        }
+
+        //add point t3 for check intersection y = -1
+        double t3 = -(origin[1]-1) / direction[1];
+        double t3_0 = (origin + t3 * direction)[0]*(origin + t3 * direction)[0];
+        double t3_2 = (origin + t3 * direction)[2]*(origin + t3 * direction)[2]+1;
+        if ((t3_0 + t3_2) > 2) {
+            t3 = -1;
+        }
+        //check for intersection y = 1
+        double t4 = -(1 + origin[1]) / direction[1];
+        double t4_0 = (origin + t4 * direction)[0]*(origin + t4 * direction)[0];
+        double t4_2 = (origin + t4 * direction)[2]*(origin + t4 * direction)[2]+1;
+        if (t4_0 + t4_2 > 2) {
+            t4 = -1;
+        }
+
+        //find min value
+        double min = 1000;
+        double t_n[4] = {t1, t2, t3, t4};
+
+        for (int i = 0; i < 4; i++) {
+            if (t_n[i] > 0 && t_n[i] < min) {
+                min = t_n[i];
+            }
+        }
+        if ((!ray.intersection.none && min > ray.intersection.t_value) ||
+                min < 0 || min == 1000) {
+            return false;
+        }
+        Point3D point = origin + min * direction;
+        Vector3D normal;
+        if (min != t3) {
+            normal = Vector3D(point[0], 0, point[2]);
+        }else{
+            normal = Vector3D(-point[0], 0, -point[2]);
+        }
+
+        ray.intersection.normal = transNorm(worldToModel, normal);
+        ray.intersection.normal.normalize();
+        ray.intersection.point = modelToWorld * point;
+        ray.intersection.t_value = min;
+        ray.intersection.none = false;
+        return true;
     }
     return false;
 }
