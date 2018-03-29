@@ -4,9 +4,9 @@ CPPFLAGS = -std=c++11
 LDFLAGS = -pg -g
 LIBS = -lm -lpng
 
-raytracer:  main.o raytracer.o util.o light_source.o scene_object.o bmp_io.o texture_handler.o
+raytracer:  main.o raytracer.o util.o light_source.o scene_object.o bmp_io.o
 	$(CC) $(CFLAGS) -o raytracer \
-	main.o raytracer.o util.o light_source.o scene_object.o bmp_io.o texture_handler.o $(LIBS)
+	main.o raytracer.o util.o light_source.o scene_object.o bmp_io.o $(LIBS)
 
 clean:
 	-rm -f core *.o

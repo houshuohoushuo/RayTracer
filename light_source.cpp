@@ -16,15 +16,9 @@
 #include <GL/glut.h>
 #endif
 
-extern int texture_width;
-extern int texture_height;
-extern int env_width;
-extern int env_height;
-extern GLubyte *env_texture;
-extern GLubyte *wood;
-
-extern Material EnvMapping;
-extern Material TextureMapping;
+extern int texture_width,texture_height,env_width,env_height;
+extern GLubyte *env_texture,*wood;
+extern Material EnvMapping,TextureMapping;
 
 double max(double a, double b){
     if (a > b) {
@@ -35,9 +29,9 @@ double max(double a, double b){
 }
 
 Color sphere_texture_color (Ray3D& ray, int width, int height, GLubyte *image, int type){
-    auto normal = ray.intersection.normal;
-    auto viewDir = -ray.dir;
-    auto reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
+    Vector3D normal = ray.intersection.normal;
+    Vector3D viewDir = -ray.dir;
+    Vector3D reflectDir = 2.0 * viewDir.dot(normal)*normal - viewDir;
     reflectDir.normalize();
 
     int u,v;
@@ -78,12 +72,11 @@ Color sphere_texture_color (Ray3D& ray, int width, int height, GLubyte *image, i
         v = 0.5*height - height * (std::asin (ray.intersection.transformed_point[1]) / M_PI );
     }
     
+    int r = image[v * 3 * width + u * 3];
+    int g = image[v * 3 * width + u * 3 + 1];
+    int b = image[v * 3 * width + u * 3 + 2];
 
-    float r = image[v * 3 * width + u * 3 + 0]  / 255.0;
-    float g = image[v * 3 * width + u * 3 + 1]  / 255.0;
-    float b = image[v * 3 * width + u * 3 + 2]  / 255.0;
-
-    return Color(r,g,b);
+    return Color(r/255.0,g/255.0,b/255.0);
 
 }
 
