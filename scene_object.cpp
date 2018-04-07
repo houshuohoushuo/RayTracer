@@ -163,14 +163,7 @@ bool UnitCone::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
         if ((!ray.intersection.none && *min > ray.intersection.t_value) || *min == -inf || *min == inf || point[1]>0 ) {
             return false;
         }
-        Vector3D normal;
-        if (*min != t3) {
-            normal = Vector3D(point[0], 0, point[2]);
-        }
-        else{
-            normal = Vector3D(-point[0], 0, -point[2]);
-        }
-        ray.intersection.normal = transNorm(worldToModel, normal);
+        ray.intersection.normal = transNorm(worldToModel, Vector3D(point[0], 0, point[2]));
         ray.intersection.normal.normalize();
         ray.intersection.point = modelToWorld * point;
         ray.intersection.t_value = *min;
