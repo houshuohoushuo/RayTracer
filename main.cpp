@@ -120,8 +120,8 @@ int main(int argc, char* argv[])
      SceneNode* cone = new SceneNode(new UnitCone(), &gold);
      scene.push_back(cone);
 
-    SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
-    scene.push_back(sphere);
+    // SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+    // scene.push_back(sphere);
 
     SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
     scene.push_back(plane);
@@ -129,10 +129,10 @@ int main(int argc, char* argv[])
 	// Apply some transformations to the sphere and unit square.
      double factor1[3] = { 1.0, 2.0, 1.0 };
 //    double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
-    sphere->translate(Vector3D(0, 0, -5));
-    sphere->rotate('x', -45);
-    sphere->rotate('z', 45);
-    sphere->scale(Point3D(0, 0, 0), factor1);
+    // sphere->translate(Vector3D(0, 0, -5));
+    // sphere->rotate('x', -45);
+    // sphere->rotate('z', 45);
+    // sphere->scale(Point3D(0, 0, 0), factor1);
 
      cone->translate(Vector3D(0, 0, -6));
 
