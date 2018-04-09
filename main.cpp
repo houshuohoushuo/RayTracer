@@ -6,7 +6,6 @@
 
 #include <cstdlib>
 #include "raytracer.h"
-// #include "texture_handler.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -19,15 +18,22 @@
 #include <memory.h>
 using namespace std;
 
-Material EnvMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
+Material env_m (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
                 Color(0.628281, 0.555802, 0.366065),
                 51.2, 0.0);
-Material TextureMapping (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
+Material texture_m (Color(0.3, 0.3, 0.3), Color(0.75164, 0.60648, 0.22648),
                 Color(0.628281, 0.555802, 0.366065),
                 51.2, 0.0);
 int texture_width, texture_height,env_width, env_height;
 GLubyte *wood,*env_texture;
 
+// Inspired by https://en.wikibooks.org/wiki/OpenGL_Programming/Intermediate/Textures
+// -A simple libpng example
+// This c++ code snippet is an example of loading a png image file into an opengl 
+// texture object. It requires libpng and opengl to work. To compile with gcc, 
+// link png glu32 and opengl32 . Most of this is taken right out of the libpng manual.
+// There is no checking or conversion of the png format to the opengl texture format. 
+// This just gives the basic idea
 int loadTexture(char *name, int &width, int &height, GLubyte **image) {
     int interlace_type;
     FILE *fp;
@@ -94,7 +100,8 @@ int main(int argc, char* argv[])
 		width = atoi(argv[1]);
 		height = atoi(argv[2]);
 	}
-	// ini_texture_handler();
+
+
 	char texture[]="ball.png";
     loadTexture(texture, texture_width, texture_height,&wood);
     char env_image[]="torontodowntown.png";
@@ -120,29 +127,31 @@ int main(int argc, char* argv[])
      SceneNode* cone = new SceneNode(new UnitCone(), &gold);
      scene.push_back(cone);
 
-    // SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+    // SceneNode* sphere = new SceneNode(new UnitSphere(), &env_m);
     // scene.push_back(sphere);
 
     SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
     scene.push_back(plane);
-    // SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+    // SceneNode* sphere = new SceneNode(new UnitSphere(), &env_m);
     // scene.push_back(sphere);
-    // SceneNode* spheresec = new SceneNode(new UnitSphere(), &EnvMapping);
+    // SceneNode* spheresec = new SceneNode(new UnitSphere(), &env_m);
     // scene.push_back(spheresec);
 
-    // SceneNode* plane = new SceneNode(new UnitSquare(), &TextureMapping);
+
+    // Cube texture mapping (produce effect -- cube1/cube2)
+    // SceneNode* plane = new SceneNode(new UnitSquare(), &texture_m);
     // scene.push_back(plane);
 
-    // SceneNode* planefront = new SceneNode(new UnitSquare(), &TextureMapping);
+    // SceneNode* planefront = new SceneNode(new UnitSquare(), &texture_m);
     // scene.push_back(planefront);
 
-    // SceneNode* planeleft = new SceneNode(new UnitSquare(), &TextureMapping);
+    // SceneNode* planeleft = new SceneNode(new UnitSquare(), &texture_m);
     // scene.push_back(planeleft);
     
-    // SceneNode* planeright = new SceneNode(new UnitSquare(), &TextureMapping);
+    // SceneNode* planeright = new SceneNode(new UnitSquare(), &texture_m);
     // scene.push_back(planeright);
 
-    // SceneNode* planeback = new SceneNode(new UnitSquare(), &TextureMapping);
+    // SceneNode* planeback = new SceneNode(new UnitSquare(), &texture_m);
     // scene.push_back(planeback);
     
 	// Apply some transformations to the sphere and unit square.
@@ -160,13 +169,13 @@ int main(int argc, char* argv[])
     plane->rotate('z', 45);
     plane->scale(Point3D(0, 0, 0), factor2);
 
+
+    // Add cube in the scene
     // double factor7[3] = { 0.5, 0.5, 0.5 }; //unit
     // spheresec->translate(Vector3D(2, 0.5, -5));
     // spheresec->rotate('x', -70);
     // spheresec->rotate('z', 45);
     // spheresec->scale(Point3D(0, 0, 0), factor7);
-
-    //  // cone->translate(Vector3D(0, 0, -6));
 
     // double factor2[3] = { 6.0, 6.0, 6.0 };
     // plane->translate(Vector3D(0, 0, -7));

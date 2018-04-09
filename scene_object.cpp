@@ -127,32 +127,32 @@ bool UnitCone::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
         double t3 = -(origin[1]-1) / direction[1];
         double t4 = -(origin[1]-(-1)) / direction[1];
         
-        double d1 = (origin + t1 * direction)[1];
-        double d2 = (origin + t2 * direction)[1];
-        double d3 = pow((origin + t3 * direction)[0],2)+ pow((origin + t3 * direction)[2],2) +1;
-        double d4 = pow((origin + t4 * direction)[0],2)+ pow((origin + t4 * direction)[2],2) +1;
+        double l1 = (origin + t1 * direction)[1];
+        double l2 = (origin + t2 * direction)[1];
+        double l3 = pow((origin + t3 * direction)[0],2)+ pow((origin + t3 * direction)[2],2) +1;
+        double l4 = pow((origin + t4 * direction)[0],2)+ pow((origin + t4 * direction)[2],2) +1;
 
         double inf = std::numeric_limits<double>::infinity();
         std::vector<double> v = {inf};
-        if (d1 > 1 || d1 < -1) {
+        if (l1 > 1 || l1 < -1) {
             t1 = -inf;
         }
         else if(t1>0){
             v.push_back(t1);
         }
-        if (d2 > 1 || d2 < -1) {
+        if (l2 > 1 || l2 < -1) {
             t2 = -inf;
         }
         else if(t2>0){
             v.push_back(t2);
         }
-        if (d3>2) {
+        if (l3>2) {
             t3= -inf;
         }
         else if(t3>0){
             v.push_back(t3);
         }
-        if (d4>2) {
+        if (l4>2) {
             t4= -inf;
         }
         else if(t4>0){
@@ -160,7 +160,7 @@ bool UnitCone::intersect(Ray3D& ray, const Matrix4x4& worldToModel,
         }
         auto min = std::min_element(std::begin(v), std::end(v));
         Point3D point = origin + *min * direction;
-        if ((!ray.intersection.none && *min > ray.intersection.t_value) || *min == -inf || *min == inf || point[1]>0 ) {
+        if ((!ray.intersection.none && *min > ray.intersection.t_value) || *min == -inf || *min == inf || point[1]>0) {
             return false;
         }
         ray.intersection.normal = transNorm(worldToModel, Vector3D(point[0], 0, point[2]));

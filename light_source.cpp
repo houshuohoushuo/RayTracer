@@ -18,7 +18,7 @@
 
 extern int texture_width,texture_height,env_width,env_height;
 extern GLubyte *env_texture,*wood;
-extern Material EnvMapping,TextureMapping;
+extern Material env_m,texture_m;
 
 double max(double a, double b){
     if (a > b) {
@@ -92,11 +92,11 @@ void PointLight::shade(Ray3D& ray) {
     auto point = ray.intersection.point;
     auto material = *(ray.intersection.mat);
 
-    if (ray.intersection.mat == &EnvMapping){
+    if (ray.intersection.mat == &env_m){
         ray.col = ray.col + sphere_texture_color(ray, env_width, env_height,env_texture, 0);
         return;
     }
-    if (ray.intersection.mat == &TextureMapping){
+    if (ray.intersection.mat == &texture_m){
         ray.col = ray.col + sphere_texture_color(ray, texture_width, texture_height,wood, 1);
         return;
     }
