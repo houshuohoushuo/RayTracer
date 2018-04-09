@@ -1,7 +1,20 @@
 1. Overall submission
+	The submission included all codes for Assignment 3 in the Folder named \RayTracer. 
+	Based on the starter code provided by prof we add all features required by Part A, and picked five features for Part B (stated in part 3). 
+	Members' informations are in CHECKLIST.txt.
 
 ======================
 2. Code/file structure
+	(a) Results: 
+		All results .bmp files are in folder /all_pictures
+	(b) How to use:
+		* Default effect we show is Phong illumination, to run and get other effect please follow steps as follow
+		uncomment the code indicated:
+		- Anti-anliasing (in raytracer.cpp-function render()) 
+		- soft shadow (in raytracer.cpp-function computeShading())
+		- Texture mapping (in main.cpp, modify the material of scene object to - &texture_m, change the texture .png by modifing line#105)
+		- Env mapping (in main.cpp, modify the material of scene object to - &env_m, change the texture .png by modifing line#107)
+		- Cone (code in scene_object, uncomment cone code in main to see a cone)
 
 ======================
 3. What we implemented/ What external resources used
@@ -25,6 +38,7 @@
 	External Resources:
 	- https://en.wikibooks.org/wiki/OpenGL_Programming/Intermediate/Textures  (png loder/<png.h>)
 	- Tut slides
+	- computergraphics.stackexchange.com/questions/4248/how-is-anti-aliasing-implemented-in-ray-tracing
 
 ======================
 4. Roles
