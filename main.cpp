@@ -112,23 +112,23 @@ int main(int argc, char* argv[])
 		51.2,0.0);
 	Material jade(Color(0, 0, 0), Color(0.54,0.89,0.63),
 		Color(0.316228,0.316228,0.316228),
-		12.8,0.7);
+		12.8,0.0);
 
 	// Defines a Square light source.
     // when light width is 0,light source is point light
-     SquareLight* sLight = new SquareLight(Point3D(0,0,5), Color(0.9,0.9,0.9),3);
-     light_list.push_back(sLight);
+    // SquareLight* sLight = new SquareLight(Point3D(0,0,5), Color(0.9,0.9,0.9),3);
+    // light_list.push_back(sLight);
 
-//    PointLight* pLight = new PointLight(Point3D(0,0,5), Color(0.9,0.9,0.9));
-//    light_list.push_back(pLight);
+   PointLight* pLight = new PointLight(Point3D(0,0,5), Color(0.9,0.9,0.9));
+   light_list.push_back(pLight);
 
 	
 	// Add a unit square into the scene with material mat.
-     SceneNode* cone = new SceneNode(new UnitCone(), &gold);
-     scene.push_back(cone);
+     // SceneNode* cone = new SceneNode(new UnitCone(), &gold);
+     // scene.push_back(cone);
 
-    // SceneNode* sphere = new SceneNode(new UnitSphere(), &env_m);
-    // scene.push_back(sphere);
+    SceneNode* sphere = new SceneNode(new UnitSphere(), &gold);
+    scene.push_back(sphere);
 
     SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
     scene.push_back(plane);
@@ -157,12 +157,12 @@ int main(int argc, char* argv[])
 	// Apply some transformations to the sphere and unit square.
      double factor1[3] = { 1.0, 2.0, 1.0 };
 //    double factor1[3] = { 1.0, 1.0, 1.0 }; //unit
-    // sphere->translate(Vector3D(0, 0, -5));
-    // sphere->rotate('x', -45);
-    // sphere->rotate('z', 45);
-    // sphere->scale(Point3D(0, 0, 0), factor1);
+    sphere->translate(Vector3D(0, 0, -5));
+    sphere->rotate('x', -45);
+    sphere->rotate('z', 45);
+    sphere->scale(Point3D(0, 0, 0), factor1);
 
-     cone->translate(Vector3D(0, 0, -6));
+     // cone->translate(Vector3D(0, 0, -6));
 
     double factor2[3] = { 6.0, 6.0, 6.0 };
     plane->translate(Vector3D(0, 0, -7));

@@ -1,0 +1,46 @@
+1. Overall submission
+
+======================
+2. Code/file structure
+
+======================
+3. What we implemented/ What external resources used
+	Features:
+	-Part A
+	* Ray casting
+	* Ray-sphere intersection
+	* Ray-square intersection
+	* Phong illumination
+
+	-Part B
+	Recursive ray tracing
+	Hard shadows
+	 -(5/11)
+	 	* Anti-aliasing
+	 	* Extended light sources(soft shadow)
+	 	* Texture-mapping (plane, sphere, cube)
+	 	* Environment mapping
+	 	* Non-trivial compound object (cone)
+
+	External Resources:
+	- https://en.wikibooks.org/wiki/OpenGL_Programming/Intermediate/Textures  (png loder/<png.h>)
+	- Tut slides
+
+======================
+4. Roles
+	Shuo Hou:
+		* Ray casting
+		* Ray-sphere intersection
+		* Ray-square intersection
+		* Anti - aliasing
+		* Extended light sources
+
+	Qiao Song:
+		* Phone illumination
+		* Report
+		* Texture-mapping
+		* Environment mapping
+
+	Together:
+		* Cone
+======================
