@@ -125,6 +125,25 @@ int main(int argc, char* argv[])
 
     SceneNode* plane = new SceneNode(new UnitSquare(), &jade);
     scene.push_back(plane);
+    // SceneNode* sphere = new SceneNode(new UnitSphere(), &EnvMapping);
+    // scene.push_back(sphere);
+    // SceneNode* spheresec = new SceneNode(new UnitSphere(), &EnvMapping);
+    // scene.push_back(spheresec);
+
+    // SceneNode* plane = new SceneNode(new UnitSquare(), &TextureMapping);
+    // scene.push_back(plane);
+
+    // SceneNode* planefront = new SceneNode(new UnitSquare(), &TextureMapping);
+    // scene.push_back(planefront);
+
+    // SceneNode* planeleft = new SceneNode(new UnitSquare(), &TextureMapping);
+    // scene.push_back(planeleft);
+    
+    // SceneNode* planeright = new SceneNode(new UnitSquare(), &TextureMapping);
+    // scene.push_back(planeright);
+
+    // SceneNode* planeback = new SceneNode(new UnitSquare(), &TextureMapping);
+    // scene.push_back(planeback);
     
 	// Apply some transformations to the sphere and unit square.
      double factor1[3] = { 1.0, 2.0, 1.0 };
@@ -140,6 +159,43 @@ int main(int argc, char* argv[])
     plane->translate(Vector3D(0, 0, -7));
     plane->rotate('z', 45);
     plane->scale(Point3D(0, 0, 0), factor2);
+
+    // double factor7[3] = { 0.5, 0.5, 0.5 }; //unit
+    // spheresec->translate(Vector3D(2, 0.5, -5));
+    // spheresec->rotate('x', -70);
+    // spheresec->rotate('z', 45);
+    // spheresec->scale(Point3D(0, 0, 0), factor7);
+
+    //  // cone->translate(Vector3D(0, 0, -6));
+
+    // double factor2[3] = { 6.0, 6.0, 6.0 };
+    // plane->translate(Vector3D(0, 0, -7));
+    // // plane->rotate('z', 45);
+    // plane->scale(Point3D(0, 0, 0), factor2);
+
+    // double factor3[3] = { 6.0, 6.0, 6.0 };
+    // planefront->translate(Vector3D(0,3, -7));
+    // // planefront->rotate('z', 45);
+    // planefront->rotate('x', 90);
+    // planefront->scale(Point3D(0, 0, 0), factor3);
+
+    // double factor4[3] = { 6.0, 6.0, 6.0 };
+    // planeleft->translate(Vector3D(3,0, -7));
+    // // planefront->rotate('z', 45);
+    // planeleft->rotate('y', 90);
+    // planeleft->scale(Point3D(0, 0, 0), factor4);
+
+    // double factor5[3] = { 6.0, 6.0, 6.0 };
+    // planeright->translate(Vector3D(-3,0, -7));
+    // // planefront->rotate('z', 45);
+    // planeright->rotate('y', -90);
+    // planeright->scale(Point3D(0, 0, 0), factor5);
+
+    // double factor6[3] = { 6.0, 6.0, 6.0 };
+    // planeback->translate(Vector3D(0,-3, -7));
+    // // planefront->rotate('z', 45);
+    // planeback->rotate('x', 90);
+    // planeback->scale(Point3D(0, 0, 0), factor6);
 
 	// Render the scene, feel free to make the image smaller for
 	// testing purposes.	
